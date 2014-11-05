@@ -1,20 +1,29 @@
 import itertools
 from copy import copy
+from collections import defaultdict
+import collections.abc
+
 
 _special_top_level_keys = {'linked', 'links', 'meta', 'data'}
 
-class Cache(object):
+class Cache(collections.abc.Mapping):
 
-    def __init__(self):
-        self._object_cache = {}
+    def __init__(self, data=None):
+        self._object_cache = defaultdict(dict)
 
-    def get(self, type, key):
-        return self._object_cache.get((type, key))
+        if object:
+            self.add_data(data)
 
-    def set(self, type, key, value):
-        self._object_cache[(type, key)] = value
+    def __len__(self):
+        return len(self._object_cache)
 
-    def update(self, data_tree, top_type='data'):
+    def __iter__(self):
+        return iter(self._object_cache)
+
+    def __getitem__(self, key):
+        return self._object_cache[key]
+
+    def add_data(self, data_tree, top_type='data'):
         object_lists = []
 
         # the 'main' data can be either under the 'data' key or its type
@@ -35,9 +44,9 @@ class Cache(object):
         # add items to cache
         for type, objs in object_lists:
             for obj in objs:
-                if not self.get(type, obj['id']):
-                    self.set(type, obj['id'], copy(obj))
+                if not obj['id'] in self[type]:
+                    self[type][obj['id']] = copy(obj)
                 else:
-                    old = self.get(type, obj['id'])
+                    old = self[type][obj['id']]
                     old.update(obj)
 

@@ -1,6 +1,6 @@
 import requests
 
-import utils
+from midata import utils
 
 sign_in_url = "/users/sign_in.json"
 
@@ -9,7 +9,7 @@ class AuthException(Exception):
 
 class AuthInfo(object):
     def __init__(self, auth_json, server):
-        self._server = server
+        self.server = server
 
         # grab authentication info
         try:
