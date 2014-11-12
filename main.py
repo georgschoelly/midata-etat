@@ -5,10 +5,9 @@ import midata
 from midata import authentication as auth
 
 # input data
-server   = "http://db.scout.ch"
+server   = "https://db.scout.ch"
 email    = "user@pbs.ch"
 password = "password"
-group_id = 15
 
 # log in
 auth_info = auth.sign_in(server, email, password)
@@ -22,9 +21,9 @@ valid_group_roles  = {'Abteilungsleiter'}
 group_lookup = {group['id']:group for group in user.groups}
 
 roles = (role for role in user.roles
-              if role['role_type'] in valid_group_roles)
+              if role.role_type in valid_group_roles)
 
-groups = [group_lookup[role['links']['group']] for role in roles]
+groups = [group_lookup[role.group] for role in roles]
 
 # SELECT ONE
 group_id = '15'
