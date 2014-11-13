@@ -2,11 +2,12 @@
 
 import sys
 
-from PyQt5.QtCore import pyqtProperty, QCoreApplication, QObject, QUrl
+from PyQt5.QtCore import pyqtProperty, QObject, QUrl
+from PyQt5.QtWidgets import QApplication
 from PyQt5.QtQml import qmlRegisterType, QQmlComponent, QQmlEngine
 
 # Create the application instance.
-app = QCoreApplication(sys.argv)
+app = QApplication(sys.argv)
 
 # Create a QML engine.
 engine = QQmlEngine()
@@ -15,3 +16,9 @@ engine = QQmlEngine()
 component = QQmlComponent(engine)
 component.loadUrl(QUrl('main.qml'))
 
+# get window
+window = component.create()
+
+window.show()
+
+app.exec_()

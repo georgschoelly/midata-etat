@@ -66,6 +66,26 @@ ApplicationWindow {
 
     property Component secondStep : Column {
         spacing: inner_spacing
+
+        Row {
+            Label {
+                text: "< zurück"
+                color: "steelblue"
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: stackView.pop()
+                }
+            } 
+            Item {
+                width: 20
+                height:1
+            }
+            Label {
+                text: "Eingeloggt als Muster Meier"
+            }
+        }
+
         RowLayout {
             anchors.left:  parent.left
             anchors.right: parent.right
@@ -123,6 +143,20 @@ ApplicationWindow {
                     property: "y"
                     from: 0
                     to: -contentHeight
+                }
+            }
+            popTransition: StackViewTransition {
+                PropertyAnimation {
+                    target: enterItem
+                    property: "y"
+                    from: -contentHeight
+                    to: 0
+                }
+                PropertyAnimation {
+                    target: exitItem
+                    property: "y"
+                    from: 0
+                    to: +contentHeight
                 }
             }
         }
